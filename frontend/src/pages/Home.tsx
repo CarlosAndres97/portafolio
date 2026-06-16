@@ -1,8 +1,28 @@
-import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { FiArrowRight } from 'react-icons/fi'
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { FiArrowRight } from "react-icons/fi";
+import { projectService } from "../services/projectService";
+import { Project } from "../types";
 
 export default function Home() {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await projectService.getAll();
+        setProjects(data.slice(0, 3));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProjects();
+  }, []);
+
   return (
     <div className="min-h-[calc(100vh-64px)]">
       {/* Hero Section */}
@@ -17,13 +37,20 @@ export default function Home() {
             Hola, soy <span className="text-primary-600">Desarrollador</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Creo experiencias web modernas, rápidas y accesibles. Especializado en React, Node.js y tecnologías modernas.
+            Creo experiencias web modernas, rápidas y accesibles. Especializado
+            en React, Node.js y tecnologías modernas.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/projects" className="btn-primary inline-flex items-center gap-2 justify-center">
+            <Link
+              to="/projects"
+              className="btn-primary inline-flex items-center gap-2 justify-center"
+            >
               Ver Proyectos <FiArrowRight />
             </Link>
-            <Link to="/contact" className="btn-secondary inline-flex items-center gap-2 justify-center">
+            <Link
+              to="/contact"
+              className="btn-secondary inline-flex items-center gap-2 justify-center"
+            >
               Contactarme
             </Link>
           </div>
@@ -33,23 +60,35 @@ export default function Home() {
       {/* Featured Projects Preview */}
       <section className="bg-gray-50 dark:bg-gray-800 py-20">
         <div className="container-custom">
-          <h2 className="text-4xl font-bold mb-12 text-center">Proyectos Destacados</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center">
+            Proyectos Destacados
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
+            {projects.map((project, i) => (
               <motion.div
-                key={i}
+                key={project._id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.2 }}
                 className="bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
               >
-                <div className="h-48 bg-gradient-to-br from-primary-500 to-primary-700" />
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">Proyecto {i}</h3>
+                <div
+                  className="p-6 hover:cursor-pointer"
+                  onClick={() => navigate(`/projects/${project._id}`)}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-32 object-cover rounded mb-4"
+                  />
+                  <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    Descripción del proyecto y tecnologías utilizadas.
+                    {project.description}
                   </p>
-                  <Link to="/projects" className="text-primary-600 font-semibold hover:text-primary-700">
+                  <Link
+                    to={`/projects/${project._id}`}
+                    className="text-primary-600 font-semibold hover:text-primary-700"
+                  >
                     Ver más →
                   </Link>
                 </div>
@@ -59,5 +98,5 @@ export default function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }

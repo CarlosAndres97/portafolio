@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Project } from '../types'
 import { projectService } from '../services/projectService'
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -46,7 +48,8 @@ export default function Projects() {
           {projects.map((project) => (
             <div
               key={project._id}
-              className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              onClick={() => navigate(`/projects/${project._id}`)}
+              className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
             >
               {project.image && (
                 <img
@@ -62,7 +65,7 @@ export default function Projects() {
                   {project.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 text-sm px-3 py-1 rounded"
+                      className="bg-primary-400 dark:bg-primary-900 text-primary-800 dark:text-primary-200 text-sm px-3 py-1 rounded"
                     >
                       {tech}
                     </span>
