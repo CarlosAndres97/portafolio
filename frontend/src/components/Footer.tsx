@@ -1,99 +1,156 @@
 import { Link } from "react-router-dom";
-import { FiGithub, FiLinkedin, FiTwitter, FiMail } from "react-icons/fi";
+import {
+  FiGithub,
+  FiLinkedin,
+  FiTwitter,
+  FiMail,
+  FiArrowUpRight,
+  FiSend,
+} from "react-icons/fi";
+import { useState } from "react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmail("");
+  };
 
   return (
-    <footer className="bg-gray-100 dark:bg-gray-800 mt-20 py-12">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <footer className="relative mt-20 bg-gray-50 dark:bg-gray-950 border-t border-gray-200/50 dark:border-gray-800/50">
+      <div className="container-custom py-16">
+        {/* Newsletter */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 pb-16 border-b border-gray-200/50 dark:border-gray-800/50">
           <div>
-            <h3 className="text-xl font-bold mb-4">Portfolio</h3>
+            <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">
+              ¿Quieres estar al día?
+            </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              Desarrollador web apasionado por crear soluciones innovadoras.
+              Suscríbete a mi newsletter y recibe contenido exclusivo sobre
+              desarrollo web, tutoriales y nuevos proyectos.
+            </p>
+          </div>
+          <form
+            onSubmit={handleSubscribe}
+            className="flex flex-col sm:flex-row gap-3 lg:items-center"
+          >
+            <input
+              type="email"
+              required
+              placeholder="tu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field flex-1"
+            />
+            <button type="submit" className="btn-primary whitespace-nowrap">
+              Suscribirme
+              <FiSend />
+            </button>
+          </form>
+        </div>
+
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+          <div className="col-span-2 md:col-span-1">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2.5 font-display text-xl font-extrabold mb-4"
+            >
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-600 to-accent-600 flex items-center justify-center text-white shadow-lg">
+                <span className="text-sm font-black">CS</span>
+              </div>
+              <span className="gradient-text-static">Carlos.dev</span>
+            </Link>
+            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+              Desarrollador web full stack apasionado por crear experiencias
+              digitales excepcionales.
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Enlaces</h4>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              <li>
-                <Link
-                  to="/"
-                  className="hover:text-primary-600 transition-colors"
-                >
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/projects"
-                  className="hover:text-primary-600 transition-colors"
-                >
-                  Proyectos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/blog"
-                  className="hover:text-primary-600 transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/contact"
-                  className="hover:text-primary-600 transition-colors"
-                >
-                  Contacto
-                </Link>
-              </li>
+            <h4 className="font-display font-semibold mb-4">Navegación</h4>
+            <ul className="space-y-2.5 text-sm">
+              {[
+                { to: "/", label: "Inicio" },
+                { to: "/projects", label: "Proyectos" },
+                { to: "/blog", label: "Blog" },
+                { to: "/about", label: "Sobre mí" },
+              ].map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors inline-flex items-center gap-1 group"
+                  >
+                    {link.label}
+                    <FiArrowUpRight className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Redes Sociales</h4>
-            <div className="flex gap-4">
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary-600 transition-colors"
-              >
-                <FiGithub size={20} />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary-600 transition-colors"
-              >
-                <FiLinkedin size={20} />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary-600 transition-colors"
-              >
-                <FiTwitter size={20} />
-              </a>
-              <a
-                href="mailto:contact@example.com"
-                className="hover:text-primary-600 transition-colors"
-              >
-                <FiMail size={20} />
-              </a>
-            </div>
+            <h4 className="font-display font-semibold mb-4">Servicios</h4>
+            <ul className="space-y-2.5 text-sm text-gray-600 dark:text-gray-400">
+              <li>Desarrollo Web</li>
+              <li>Aplicaciones SPA</li>
+              <li>APIs REST</li>
+              <li>Consultoría</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-display font-semibold mb-4">Contacto</h4>
+            <ul className="space-y-2.5 text-sm">
+              <li>
+                <a
+                  href="mailto:tu@email.com"
+                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >
+                  tu@email.com
+                </a>
+              </li>
+              <li className="text-gray-600 dark:text-gray-400">
+                Madrid, España
+              </li>
+              <li className="text-gray-600 dark:text-gray-400">
+                Disponible remoto
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-300 dark:border-gray-700 pt-8">
-          <p className="text-center text-gray-600 dark:text-gray-400">
-            © {currentYear} Mi Portafolio. Todos los derechos reservados.
+        {/* Bottom Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-gray-200/50 dark:border-gray-800/50">
+          <p className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left">
+            © {currentYear} Carlos Soriano. Hecho con{" "}
+            <span className="text-red-500">♥</span> y mucho café.
           </p>
+          <div className="flex items-center gap-2">
+            {[
+              { icon: FiGithub, href: "https://github.com", label: "GitHub" },
+              {
+                icon: FiLinkedin,
+                href: "https://linkedin.com",
+                label: "LinkedIn",
+              },
+              { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
+              { icon: FiMail, href: "mailto:tu@email.com", label: "Email" },
+            ].map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gradient-to-br hover:from-primary-600 hover:to-accent-600 hover:text-white hover:border-transparent hover:scale-110 transition-all duration-300"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

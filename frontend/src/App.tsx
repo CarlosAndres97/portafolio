@@ -14,7 +14,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <Router>
-        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white antialiased">
           <Navbar />
           <main className="flex-grow">
             <Routes>

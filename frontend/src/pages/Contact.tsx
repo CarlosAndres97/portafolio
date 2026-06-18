@@ -1,151 +1,349 @@
-import { useState } from 'react'
-import { contactService } from '../services/contactService'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { contactService } from "../services/contactService";
+import {
+  FiMail,
+  FiGithub,
+  FiLinkedin,
+  FiTwitter,
+  FiSend,
+  FiCheck,
+  FiAlertCircle,
+  FiMapPin,
+  FiPhone,
+} from "react-icons/fi";
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const validate = (): boolean => {
+    const newErrors: FormErrors = {};
+    if (!formData.name.trim()) {
+      newErrors.name = "El nombre es obligatorio";
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "El nombre debe tener al menos 2 caracteres";
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = "El email es obligatorio";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email inválido";
+    }
+    if (!formData.message.trim()) {
+      newErrors.message = "El mensaje es obligatorio";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "El mensaje debe tener al menos 10 caracteres";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setSuccess(false)
+    e.preventDefault();
+    if (!validate()) return;
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
 
     try {
-      await contactService.send(formData)
-      setSuccess(true)
-      setFormData({ name: '', email: '', message: '' })
-      setTimeout(() => setSuccess(false), 5000)
+      await contactService.send(formData);
+      setSuccess(true);
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
-      setError('Error al enviar el mensaje. Por favor, intenta más tarde.')
-      console.error(err)
+      setError("Error al enviar el mensaje. Por favor, intenta más tarde.");
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  const contactInfo = [
+    {
+      icon: FiMail,
+      label: "Email",
+      value: "tu@email.com",
+      href: "mailto:tu@email.com",
+    },
+    {
+      icon: FiPhone,
+      label: "Teléfono",
+      value: "+34 123 456 789",
+      href: "tel:+34123456789",
+    },
+    {
+      icon: FiMapPin,
+      label: "Ubicación",
+      value: "Madrid, España",
+    },
+  ];
+
+  const socials = [
+    { icon: FiGithub, href: "https://github.com", label: "GitHub" },
+    { icon: FiLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
+    { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
+  ];
 
   return (
-    <div className="container-custom py-20">
-      <h1 className="text-4xl font-bold mb-12 text-center">Contacto</h1>
+    <div className="container-custom py-32">
+      {/* Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-16"
+      >
+        <span className="badge mb-4">Contacto</span>
+        <h1 className="font-display text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
+          Hablemos <span className="gradient-text-static">juntos</span>
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          ¿Tienes un proyecto en mente? Me encantaría escuchar sobre él. Envíame
+          un mensaje y te responderé lo antes posible.
+        </p>
+      </motion.div>
 
-      <div className="max-w-2xl mx-auto">
-        {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-8">
-            ¡Mensaje enviado exitosamente! Te responderé pronto.
-          </div>
-        )}
-
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-8">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              Nombre
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder="Tu nombre"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder="tu@email.com"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="message" className="block text-sm font-medium mb-2">
-              Mensaje
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              rows={6}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder="Tu mensaje aquí..."
-            />
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        {/* Contact Info */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="lg:col-span-2 space-y-6"
+        >
+          <div className="glass-card p-8">
+            <h2 className="font-display text-2xl font-bold mb-6">
+              Información de contacto
+            </h2>
+            <div className="space-y-5">
+              {contactInfo.map((info) => {
+                const Wrapper: any = info.href ? "a" : "div";
+                return (
+                  <Wrapper
+                    key={info.label}
+                    {...(info.href
+                      ? { href: info.href }
+                      : {})}
+                    className="flex items-start gap-4 group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-primary-50 dark:bg-primary-950/50 border border-primary-200 dark:border-primary-800/50 flex items-center justify-center text-primary-600 dark:text-primary-400 group-hover:scale-110 transition-transform">
+                      <info.icon size={18} />
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        {info.label}
+                      </div>
+                      <div className="font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                        {info.value}
+                      </div>
+                    </div>
+                  </Wrapper>
+                );
+              })}
+            </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Enviando...' : 'Enviar Mensaje'}
-          </button>
-        </form>
+          <div className="glass-card p-8">
+            <h3 className="font-display text-lg font-bold mb-4">Sígueme</h3>
+            <div className="flex gap-3">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800/50 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gradient-to-br hover:from-primary-500 hover:to-accent-500 hover:text-white hover:scale-110 transition-all duration-300"
+                >
+                  <social.icon size={18} />
+                </a>
+              ))}
+            </div>
+          </div>
 
-        <div className="mt-12 pt-12 border-t border-gray-300 dark:border-gray-700">
-          <h2 className="text-2xl font-bold mb-6">Otras formas de contactarme</h2>
-          <ul className="space-y-4 text-gray-600 dark:text-gray-400">
-            <li>
-              <strong>Email:</strong>{' '}
-              <a href="mailto:tu@email.com" className="text-primary-600 hover:text-primary-700">
-                tu@email.com
-              </a>
-            </li>
-            <li>
-              <strong>LinkedIn:</strong>{' '}
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 hover:text-primary-700"
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 via-primary-500 to-accent-600 p-8 text-white">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+            <div className="relative">
+              <h3 className="font-display text-xl font-bold mb-2">
+                ¿Prefieres una llamada?
+              </h3>
+              <p className="text-white/80 text-sm">
+                Estoy disponible para videollamadas de lunes a viernes. Agenda un
+                horario que te convenga.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Form */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="lg:col-span-3"
+        >
+          <div className="glass-card p-8 md:p-10">
+            <h2 className="font-display text-2xl font-bold mb-6">
+              Envíame un mensaje
+            </h2>
+
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 rounded-xl flex items-center gap-3"
               >
-                Mi perfil
-              </a>
-            </li>
-            <li>
-              <strong>GitHub:</strong>{' '}
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 hover:text-primary-700"
+                <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center flex-shrink-0">
+                  <FiCheck className="text-green-600 dark:text-green-400" />
+                </div>
+                <p className="text-green-700 dark:text-green-400 text-sm">
+                  ¡Mensaje enviado exitosamente! Te responderé pronto.
+                </p>
+              </motion.div>
+            )}
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-xl flex items-center gap-3"
               >
-                Mi repositorio
-              </a>
-            </li>
-          </ul>
-        </div>
+                <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center flex-shrink-0">
+                  <FiAlertCircle className="text-red-600 dark:text-red-400" />
+                </div>
+                <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+              </motion.div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+                >
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className={`input-field ${
+                    errors.name
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                      : ""
+                  }`}
+                  placeholder="Tu nombre"
+                />
+                {errors.name && (
+                  <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">
+                    {errors.name}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`input-field ${
+                    errors.email
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                      : ""
+                  }`}
+                  placeholder="tu@email.com"
+                />
+                {errors.email && (
+                  <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">
+                    {errors.email}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+                >
+                  Mensaje
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={6}
+                  className={`input-field resize-none ${
+                    errors.message
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                      : ""
+                  }`}
+                  placeholder="Cuéntame sobre tu proyecto..."
+                />
+                {errors.message && (
+                  <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">
+                    {errors.message}
+                  </p>
+                )}
+                <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+                  {formData.message.length} caracteres
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    Enviar mensaje
+                    <FiSend />
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        </motion.div>
       </div>
     </div>
-  )
+  );
 }
