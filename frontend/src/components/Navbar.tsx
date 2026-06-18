@@ -1,7 +1,7 @@
 import { useTheme } from "../context/ThemeContext";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiMenu, FiX, FiMoon, FiSun } from "react-icons/fi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 
 const navItems = [
   { to: "/", label: "Inicio" },
@@ -15,6 +15,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +28,20 @@ export default function Navbar() {
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+
+  const handleNavClick = (
+    e: MouseEvent<HTMLAnchorElement>,
+    to: string
+  ) => {
+    e.preventDefault();
+    if (location.pathname === to) {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      navigate(to);
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    }
+    setIsOpen(false);
+  };
 
   return (
     <nav
@@ -41,6 +56,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             to="/"
+            onClick={(e) => handleNavClick(e, "/")}
             className="group flex items-center gap-2.5 font-display text-2xl font-extrabold"
           >
             <div className="relative">
@@ -62,6 +78,7 @@ export default function Navbar() {
                 <Link
                   key={item.to}
                   to={item.to}
+                  onClick={(e) => handleNavClick(e, item.to)}
                   className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                     isActive
                       ? "text-primary-600 dark:text-primary-400"
@@ -78,6 +95,7 @@ export default function Navbar() {
             <div className="w-px h-6 bg-gray-200 dark:bg-gray-800 mx-2" />
             <Link
               to="/contact"
+              onClick={(e) => handleNavClick(e, "/contact")}
               className="ml-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 hover:scale-105 active:scale-95 transition-all duration-300"
             >
               Contacto
@@ -126,7 +144,7 @@ export default function Navbar() {
                   <Link
                     key={item.to}
                     to={item.to}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleNavClick(e, item.to)}
                     className={`px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
                       isActive
                         ? "bg-primary-50 dark:bg-primary-950/50 text-primary-600 dark:text-primary-400"
@@ -139,7 +157,7 @@ export default function Navbar() {
               })}
               <Link
                 to="/contact"
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => handleNavClick(e, "/contact")}
                 className="mt-2 px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl text-center shadow-lg shadow-primary-500/30"
               >
                 Contacto
