@@ -31,13 +31,13 @@ app.use('/api/blog', blogRoutes)
 app.use('/api/contact', contactRoutes)
 
 // Health check
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'OK', message: 'Servidor funcionando correctamente' })
 })
 
 // 404 Handler
-app.use((req: Request, res: Response) => {
-  throw new AppError(`Ruta no encontrada: ${req.path}`, 404)
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  next(new AppError(`Ruta no encontrada: ${req.path}`, 404))
 })
 
 // Error Handler
