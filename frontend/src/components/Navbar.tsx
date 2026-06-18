@@ -1,11 +1,11 @@
-import { useTheme } from '../context/ThemeContext'
-import { Link } from 'react-router-dom'
-import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi'
-import { useState } from 'react'
+import { useTheme } from "../context/ThemeContext";
+import { Link } from "react-router-dom";
+import { FiMenu, FiX, FiMoon, FiSun } from "react-icons/fi";
+import { useState } from "react";
 
 export default function Navbar() {
-  const { isDark, toggleTheme } = useTheme()
-  const [isOpen, setIsOpen] = useState(false)
+  const { isDark, toggleTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md">
@@ -19,13 +19,19 @@ export default function Navbar() {
           <Link to="/" className="hover:text-primary-600 transition-colors">
             Inicio
           </Link>
-          <Link to="/projects" className="hover:text-primary-600 transition-colors">
+          <Link
+            to="/projects"
+            className="hover:text-primary-600 transition-colors"
+          >
             Proyectos
           </Link>
           <Link to="/blog" className="hover:text-primary-600 transition-colors">
             Blog
           </Link>
-          <Link to="/about" className="hover:text-primary-600 transition-colors">
+          <Link
+            to="/about"
+            className="hover:text-primary-600 transition-colors"
+          >
             Sobre mí
           </Link>
           <Link to="/contact" className="btn-primary">
@@ -71,11 +77,15 @@ export default function Navbar() {
           <Link to="/about" onClick={() => setIsOpen(false)}>
             Sobre mí
           </Link>
-          <Link to="/contact" onClick={() => setIsOpen(false)} className="btn-primary">
+          <Link
+            to="/contact"
+            onClick={() => setIsOpen(false)}
+            className="btn-primary"
+          >
             Contacto
           </Link>
         </div>
       )}
     </nav>
-  )
+  );
 }

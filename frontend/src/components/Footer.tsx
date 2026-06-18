@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
-import { FiGithub, FiLinkedin, FiTwitter, FiMail } from 'react-icons/fi'
+import { Link } from "react-router-dom";
+import { FiGithub, FiLinkedin, FiTwitter, FiMail } from "react-icons/fi";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-gray-100 dark:bg-gray-800 mt-20 py-12">
@@ -19,22 +19,34 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Enlaces</h4>
             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
               <li>
-                <Link to="/" className="hover:text-primary-600 transition-colors">
+                <Link
+                  to="/"
+                  className="hover:text-primary-600 transition-colors"
+                >
                   Inicio
                 </Link>
               </li>
               <li>
-                <Link to="/projects" className="hover:text-primary-600 transition-colors">
+                <Link
+                  to="/projects"
+                  className="hover:text-primary-600 transition-colors"
+                >
                   Proyectos
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="hover:text-primary-600 transition-colors">
+                <Link
+                  to="/blog"
+                  className="hover:text-primary-600 transition-colors"
+                >
                   Blog
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-primary-600 transition-colors">
+                <Link
+                  to="/contact"
+                  className="hover:text-primary-600 transition-colors"
+                >
                   Contacto
                 </Link>
               </li>
@@ -85,5 +97,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
