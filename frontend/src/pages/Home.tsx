@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import {
   FiArrowRight,
   FiGithub,
@@ -13,8 +11,7 @@ import {
   FiLayers,
   FiArrowUpRight,
 } from "react-icons/fi";
-import { projectService } from "../services/projectService";
-import { Project } from "../types";
+import { useFeaturedProjects } from "../hooks/useProjects";
 
 const stats = [
   { value: "3+", label: "Años de experiencia" },
@@ -45,20 +42,8 @@ const features = [
 ];
 
 export default function Home() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const { projects, loading } = useFeaturedProjects(3);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const data = await projectService.getAll();
-        setProjects(data.slice(0, 3));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchProjects();
-  }, []);
 
   return (
     <div className="overflow-hidden">
@@ -246,7 +231,7 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.length === 0
+            {loading
               ? Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={i}

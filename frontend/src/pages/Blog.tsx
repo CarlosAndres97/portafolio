@@ -1,54 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { BlogPost } from "../types";
-import { blogService } from "../services/blogService";
 import { Link } from "react-router-dom";
 import { FiClock, FiArrowUpRight, FiBookOpen, FiSearch, FiX } from "react-icons/fi";
+import { useBlogPosts } from "../hooks/useBlogPosts";
 
 export default function Blog() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [filtered, setFiltered] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { posts, loading, error } = useBlogPosts();
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState("Todos");
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await blogService.getAll();
-        setPosts(data);
-        setFiltered(data);
-      } catch (err) {
-        setError("Error al cargar los artículos");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
-  useEffect(() => {
+  const filtered = useMemo(() => {
     let result = posts;
     if (search) {
+      const q = search.toLowerCase();
       result = result.filter(
         (p) =>
-          p.title.toLowerCase().includes(search.toLowerCase()) ||
-          p.excerpt.toLowerCase().includes(search.toLowerCase())
+          p.title.toLowerCase().includes(q) ||
+          p.excerpt.toLowerCase().includes(q)
       );
     }
     if (activeTag !== "Todos") {
       result = result.filter((p) => p.tags?.includes(activeTag));
     }
-    setFiltered(result);
-  }, [search, activeTag, posts]);
+    return result;
+  }, [posts, search, activeTag]);
 
-  const allTags = Array.from(
-    new Set(posts.flatMap((p) => p.tags || []))
+  const allTags = useMemo(
+    () => Array.from(new Set(posts.flatMap((p) => p.tags || []))),
+    [posts]
   );
-  const tags = ["Todos", ...allTags];
+  const tags = useMemo(() => ["Todos", ...allTags], [allTags]);
 
   if (loading) {
     return (

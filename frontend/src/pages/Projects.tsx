@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Project } from "../types";
-import { projectService } from "../services/projectService";
+import { useProjects } from "../hooks/useProjects";
 import {
   FiArrowUpRight,
   FiGithub,
@@ -13,54 +12,36 @@ import {
 } from "react-icons/fi";
 
 export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [filtered, setFiltered] = useState<Project[]>([]);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { projects, loading, error } = useProjects();
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("Todos");
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const data = await projectService.getAll();
-        setProjects(data);
-        setFiltered(data);
-      } catch (err) {
-        setError("Error al cargar los proyectos");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProjects();
-  }, []);
-
-  useEffect(() => {
+  const filtered = useMemo(() => {
     let result = projects;
     if (search) {
+      const q = search.toLowerCase();
       result = result.filter(
         (p) =>
-          p.title.toLowerCase().includes(search.toLowerCase()) ||
-          p.description.toLowerCase().includes(search.toLowerCase()) ||
-          p.technologies.some((t) =>
-            t.toLowerCase().includes(search.toLowerCase())
-          )
+          p.title.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q) ||
+          p.technologies.some((t) => t.toLowerCase().includes(q))
       );
     }
     if (activeFilter !== "Todos") {
       result = result.filter((p) => p.technologies.includes(activeFilter));
     }
-    setFiltered(result);
-  }, [search, activeFilter, projects]);
+    return result;
+  }, [projects, search, activeFilter]);
 
-  // Get all unique technologies for filter
-  const allTechs = Array.from(
-    new Set(projects.flatMap((p) => p.technologies || []))
+  const allTechs = useMemo(
+    () => Array.from(new Set(projects.flatMap((p) => p.technologies || []))),
+    [projects]
   );
-  const filters = ["Todos", ...allTechs];
+  const filters = useMemo(
+    () => ["Todos", ...allTechs],
+    [allTechs]
+  );
 
   if (loading) {
     return (

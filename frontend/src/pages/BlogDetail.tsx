@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BlogPost } from "../types";
-import { blogService } from "../services/blogService";
 import {
   FiArrowLeft,
   FiClock,
@@ -10,30 +8,12 @@ import {
   FiShare2,
   FiCheck,
 } from "react-icons/fi";
+import { useBlogPostBySlug } from "../hooks/useBlogPosts";
 
 export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { post, loading, error } = useBlogPostBySlug(slug);
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    const fetchPost = async () => {
-      if (!slug) return;
-      try {
-        const data = await blogService.getBySlug(slug);
-        setPost(data);
-      } catch (err) {
-        setError("Error al cargar el artículo");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPost();
-  }, [slug]);
 
   const handleShare = async () => {
     if (navigator.share) {

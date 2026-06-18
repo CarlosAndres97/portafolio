@@ -1,8 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { projectService } from "../services/projectService";
-import { Project } from "../types";
 import {
   FiArrowLeft,
   FiExternalLink,
@@ -10,25 +7,11 @@ import {
   FiCalendar,
   FiCode,
 } from "react-icons/fi";
+import { useProject } from "../hooks/useProjects";
 
 export default function ProjectDescription() {
   const { id } = useParams();
-  const [project, setProject] = useState<Project | null>();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        const data = await projectService.getById(id!);
-        setProject(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProject();
-  }, [id]);
+  const { project, loading } = useProject(id);
 
   if (loading) {
     return (
