@@ -2,7 +2,17 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx,css}",
+  ],
+  safelist: [
+    "from-primary-500",
+    "from-primary-600",
+    "via-accent-500",
+    "to-accent-500",
+    "to-primary-500",
+    "to-primary-600",
+    "to-transparent",
+    "animate-gradient",
   ],
   theme: {
     extend: {
