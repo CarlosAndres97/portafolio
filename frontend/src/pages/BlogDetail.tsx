@@ -8,19 +8,20 @@ import {
   FiShare2,
   FiCheck,
 } from "react-icons/fi";
-import { useBlogPostBySlug } from "../hooks/useBlogPosts";
+import { blogPosts } from "../data/blogPosts";
 
 export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { post, loading, error } = useBlogPostBySlug(slug);
+  const post = blogPosts.find((p) => p.slug === slug);
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
+    if (!post) return;
     if (navigator.share) {
       try {
         await navigator.share({
-          title: post?.title,
-          text: post?.excerpt,
+          title: post.title,
+          text: post.excerpt,
           url: window.location.href,
         });
       } catch (err) {
@@ -37,26 +38,7 @@ export default function BlogDetail() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="container-custom py-32 text-center">
-        <div className="inline-flex items-center gap-3 text-gray-600 dark:text-gray-400">
-          <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.1s" }}
-          />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.2s" }}
-          />
-          <span className="ml-2">Cargando artículo...</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !post) {
+  if (!post) {
     return (
       <div className="container-custom py-32 text-center">
         <div className="max-w-md mx-auto glass-card p-10">
@@ -64,7 +46,7 @@ export default function BlogDetail() {
             <span className="text-3xl">😕</span>
           </div>
           <p className="text-red-600 dark:text-red-400 mb-6 text-lg">
-            {error || "Artículo no encontrado"}
+            Artículo no encontrado
           </p>
           <Link to="/blog" className="btn-primary inline-flex">
             <FiArrowLeft />

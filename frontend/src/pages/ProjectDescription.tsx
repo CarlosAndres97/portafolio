@@ -7,30 +7,11 @@ import {
   FiCalendar,
   FiCode,
 } from "react-icons/fi";
-import { useProject } from "../hooks/useProjects";
+import { projects } from "../data/projects";
 
 export default function ProjectDescription() {
   const { id } = useParams();
-  const { project, loading } = useProject(id);
-
-  if (loading) {
-    return (
-      <div className="container-custom py-32 text-center">
-        <div className="inline-flex items-center gap-3 text-gray-600 dark:text-gray-400">
-          <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.1s" }}
-          />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.2s" }}
-          />
-          <span className="ml-2">Cargando proyecto...</span>
-        </div>
-      </div>
-    );
-  }
+  const project = projects.find((p) => p._id === id);
 
   if (!project) {
     return (

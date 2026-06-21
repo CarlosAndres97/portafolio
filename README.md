@@ -1,154 +1,123 @@
-# Portafolio Web - React Frontend + Node/Express Backend
+# Portafolio Web - React + Vercel Serverless
 
-Portafolio web profesional con arquitectura fullstack moderna.
+Portafolio web profesional construido con React, TypeScript y Vite. El envío de correos del formulario de contacto se maneja con una Vercel serverless function (nodemailer).
 
 ## 🚀 Quick Start
 
-### Requisitos previos
-- Node.js 18+ 
+### Requisitos
+- Node.js 18+
 - npm o yarn
-- MongoDB (cloud o local)
 
 ### Instalación
 
-1. **Clonar el repositorio**
 ```bash
 git clone <tu-repo>
 cd portafolio
-```
-
-2. **Instalar dependencias globales**
-```bash
 npm install
 ```
 
-3. **Configurar variables de entorno**
+### Desarrollo
 
-Backend (`.env`):
-```bash
-cp backend/.env.example backend/.env
-# Edita backend/.env con tus credenciales de MongoDB
-```
-
-Frontend (`.env.local`):
-```bash
-echo "VITE_API_URL=http://localhost:5000/api" > frontend/.env.local
-```
-
-4. **Instalar dependencias de cada workspace**
-```bash
-npm install --workspace=frontend
-npm install --workspace=backend
-```
-
-5. **Ejecutar en desarrollo**
 ```bash
 npm run dev
 ```
 
-- Frontend: http://localhost:3000
-- Backend: http://localhost:5000
+Abre http://localhost:3000
 
-## 📁 Estructura del Proyecto
+### Build de producción
+
+```bash
+npm run build
+npm run preview
+```
+
+## 📁 Estructura
 
 ```
 portafolio/
-├── frontend/              # Aplicación React
+├── frontend/
+│   ├── api/
+│   │   └── send-email.ts          # Vercel serverless function
 │   ├── src/
-│   │   ├── components/   # Componentes reutilizables
-│   │   ├── pages/        # Páginas de la app
-│   │   ├── services/     # API calls
-│   │   ├── context/      # React Context (tema)
-│   │   └── types/        # TypeScript interfaces
-│   ├── public/           # Assets estáticos
+│   │   ├── components/           # Componentes reutilizables
+│   │   ├── pages/                # Páginas
+│   │   ├── data/                 # Datos estáticos (projects, blogPosts, about)
+│   │   ├── context/              # ThemeContext
+│   │   ├── hooks/                # useTheme
+│   │   └── types/                # Interfaces TypeScript
+│   ├── public/
 │   └── vite.config.ts
-│
-├── backend/               # Servidor Node/Express
-│   ├── src/
-│   │   ├── routes/       # Rutas API
-│   │   ├── controllers/  # Lógica de negocio
-│   │   ├── models/       # Esquemas Mongoose
-│   │   ├── middleware/   # Middlewares
-│   │   ├── config/       # Configuración
-│   │   └── server.ts     # Punto de entrada
-│   ├── .env.example
-│   └── tsconfig.json
-│
-└── package.json          # Workspace configuration
+└── package.json
 ```
 
-## 🔌 APIs Disponibles
+## ✏️ Agregar contenido
 
-### Proyectos
-- `GET /api/projects` - Obtener todos los proyectos
-- `GET /api/projects/:id` - Obtener proyecto por ID
-- `POST /api/projects` - Crear nuevo proyecto
-- `DELETE /api/projects/:id` - Eliminar proyecto
+Edita los archivos en `frontend/src/data/`:
 
-### Blog
-- `GET /api/blog` - Obtener todos los artículos
-- `GET /api/blog/:slug` - Obtener artículo por slug
-- `POST /api/blog` - Crear nuevo artículo
-- `DELETE /api/blog/:id` - Eliminar artículo
+- **`projects.ts`** — añade objetos `Project` al array
+- **`blogPosts.ts`** — añade objetos `BlogPost` al array
+- **`about.ts`** — modifica skills/experiencias
 
-### Contacto
-- `POST /api/contact` - Enviar mensaje de contacto
+TypeScript validará la estructura automáticamente.
+
+## 📧 Configurar envío de emails
+
+### Producción (Vercel)
+
+En el dashboard de Vercel, configura:
+
+| Variable | Descripción | Ejemplo |
+|---|---|---|
+| `MAILER_SERVICE` | Servicio SMTP | `gmail` |
+| `MAILER_EMAIL` | Email remitente | `tu@gmail.com` |
+| `MAILER_SECRET_KEY` | App Password (no tu contraseña) | `xxxx xxxx xxxx xxxx` |
+| `ADMIN_EMAIL` | Destinatario de mensajes | `tu@gmail.com` |
+
+Para Gmail: [App Passwords](https://myaccount.google.com/apppasswords)
+
+### Local (con Vercel CLI)
+
+```bash
+npm install -g vercel
+vercel link
+vercel env pull frontend/.env.local
+npm start
+```
+
+`npm start` ejecuta `vercel dev` que levanta frontend + API en conjunto.
 
 ## 🎨 Features
 
-✅ Responsive design (mobile-first)
-✅ Dark/Light mode
-✅ Galería de proyectos
-✅ Blog con artículos
-✅ Formulario de contacto
-✅ Descarga de CV
-✅ Integración de redes sociales
-✅ SEO friendly
-✅ Performance optimizado
+- ✅ Responsive design
+- ✅ Dark/Light mode
+- ✅ Galería de proyectos con búsqueda y filtros
+- ✅ Blog con búsqueda por tags
+- ✅ Formulario de contacto funcional
+- ✅ Descarga de CV
+- ✅ SEO friendly
+- ✅ Performance optimizado
 
 ## 📦 Stack
 
-**Frontend:**
-- React.js + TypeScript
-- Vite
-- Tailwind CSS
-- React Router v6
-- Axios
-- Framer Motion
+- **React 18** + **TypeScript**
+- **Vite**
+- **Tailwind CSS**
+- **React Router v6**
+- **Framer Motion**
+- **Nodemailer** (serverless function)
 
-**Backend:**
-- Node.js
-- Express.js
-- MongoDB + Mongoose
-- TypeScript
-- CORS
+## 🚀 Deploy
 
-## 🚀 Deployment
+### Vercel (recomendado)
 
-### Frontend (Vercel)
 1. Push a GitHub
-2. Conectar repositorio en Vercel
-3. Variables de entorno: `VITE_API_URL`
+2. Conecta el repositorio en [Vercel](https://vercel.com)
+3. Configura el **Root Directory** como `frontend/`
+4. Añade las variables de entorno (`MAILER_*`)
+5. Deploy
 
-### Backend (Render)
-1. Push a GitHub
-2. Crear servicio en Render
-3. Variables de entorno: `MONGODB_URI`, `PORT`, etc.
-
-## 📝 TODO
-
-- [ ] Autenticación admin
-- [ ] Panel de administración
-- [ ] Búsqueda en blog
-- [ ] Paginación
-- [ ] Email notifications
-- [ ] Analytics
-- [ ] Sitemap & robots.txt
+La función `/api/send-email` se detecta automáticamente.
 
 ## 📄 Licencia
 
 MIT
-
-## 👤 Autor
-
-Tu nombre - [LinkedIn](https://linkedin.com) | [GitHub](https://github.com)

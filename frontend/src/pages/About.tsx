@@ -3,94 +3,12 @@ import { Link } from "react-router-dom";
 import {
   FiDownload,
   FiBriefcase,
-  FiCode,
-  FiCpu,
-  FiTool,
-  FiHeart,
   FiArrowRight,
 } from "react-icons/fi";
-
-const skillCategories = [
-  {
-    icon: FiCode,
-    title: "Frontend",
-    color: "from-blue-500 to-cyan-500",
-    skills: [
-      { name: "React.js / Next.js", level: 95 },
-      { name: "TypeScript", level: 90 },
-      { name: "Tailwind CSS", level: 95 },
-      { name: "Vue.js", level: 75 },
-    ],
-  },
-  {
-    icon: FiCpu,
-    title: "Backend",
-    color: "from-purple-500 to-pink-500",
-    skills: [
-      { name: "Node.js / Express", level: 92 },
-      { name: "MongoDB / PostgreSQL", level: 88 },
-      { name: "RESTful APIs", level: 90 },
-      { name: "GraphQL", level: 78 },
-    ],
-  },
-  {
-    icon: FiTool,
-    title: "Tools & DevOps",
-    color: "from-orange-500 to-red-500",
-    skills: [
-      { name: "Git / GitHub", level: 95 },
-      { name: "Docker", level: 80 },
-      { name: "Vite / Webpack", level: 88 },
-      { name: "CI/CD", level: 82 },
-    ],
-  },
-  {
-    icon: FiHeart,
-    title: "Soft Skills",
-    color: "from-green-500 to-emerald-500",
-    skills: [
-      { name: "Trabajo en equipo", level: 95 },
-      { name: "Comunicación", level: 90 },
-      { name: "Resolución de problemas", level: 92 },
-      { name: "Aprendizaje continuo", level: 98 },
-    ],
-  },
-];
-
-const experiences = [
-  {
-    role: "Senior Full Stack Developer",
-    company: "Tech Company",
-    period: "2023 - Presente",
-    description:
-      "Lidero el desarrollo de aplicaciones web escalables con React y Node.js. Implemento arquitecturas modernas y mentorizo a desarrolladores junior.",
-    current: true,
-  },
-  {
-    role: "Full Stack Developer",
-    company: "Startup Innovadora",
-    period: "2022 - 2023",
-    description:
-      "Desarrollé el producto MVP desde cero. Diseñé APIs REST, integré pasarelas de pago y optimicé el rendimiento de la aplicación.",
-    current: false,
-  },
-  {
-    role: "Frontend Developer",
-    company: "Agencia Digital",
-    period: "2021 - 2022",
-    description:
-      "Creé interfaces de usuario modernas y responsivas para diversos clientes. Trabajé con React, Vue y herramientas modernas.",
-    current: false,
-  },
-  {
-    role: "Junior Web Developer",
-    company: "Primera Empresa",
-    period: "2020 - 2021",
-    description:
-      "Comencé mi carrera profesional construyendo sitios web y aprendiendo las mejores prácticas de la industria.",
-    current: false,
-  },
-];
+import {
+  skillCategories,
+  experiences,
+} from "../data/about";
 
 export default function About() {
   return (
@@ -260,12 +178,11 @@ export default function About() {
         </h2>
 
         <div className="relative max-w-3xl mx-auto">
-          {/* Vertical line */}
           <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary-500 via-accent-500 to-transparent" />
 
           {experiences.map((exp, idx) => (
             <motion.div
-              key={idx}
+              key={`${exp.role}-${exp.period}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -274,7 +191,6 @@ export default function About() {
                 idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
               }`}
             >
-              {/* Dot */}
               <div className="absolute left-6 md:left-1/2 -translate-x-1/2 z-10 mt-1.5">
                 <div
                   className={`w-4 h-4 rounded-full ${
@@ -285,7 +201,6 @@ export default function About() {
                 />
               </div>
 
-              {/* Content */}
               <div
                 className={`ml-16 md:ml-0 md:w-1/2 ${
                   idx % 2 === 0 ? "md:pr-12" : "md:pl-12"
@@ -324,7 +239,6 @@ export default function About() {
         </div>
       </motion.div>
 
-      {/* CTA */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

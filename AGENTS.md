@@ -1,79 +1,89 @@
 # AGENTS.md - Portafolio Web
 
 ## Project Overview
-- **Type**: Monorepo (npm workspaces)
-- **Stack**: React + TypeScript (frontend) / Node.js + Express + MongoDB (backend)
-- **Build Tool**: Vite (frontend), TypeScript + tsx (backend)
+- **Type**: Single workspace (npm workspaces) containing the frontend
+- **Stack**: React 18 + TypeScript + Vite + Tailwind CSS
+- **API**: Vercel serverless function for contact email (nodemailer)
+- **Build Tool**: Vite
+- **Deployment**: Vercel (recommended) - auto-detects `/api` directory as serverless functions
 
 ## Key Commands
 
 ### Development
 ```bash
-npm run dev          # Runs frontend (port 3000) + backend (port 5000) concurrently
-npm run dev --workspace=frontend   # Frontend only
-npm run dev --workspace=backend    # Backend only
+npm run dev          # Runs Vite dev server on port 3000
+npm run dev --workspace=frontend
 ```
 
 ### Build
 ```bash
-npm run build        # Builds both workspaces (frontend first, then backend)
-npm run build --workspace=frontend  # Frontend only (tsc + vite build)
-npm run build --workspace=backend   # Backend only (tsc)
+npm run build        # TypeScript check + Vite production build
 ```
 
-### Production
+### Preview production
 ```bash
-npm start            # Starts backend production server
+npm run preview      # Vite preview server
+```
+
+### Local email testing (Vercel dev)
+```bash
+npm start            # Runs `vercel dev` (requires Vercel CLI installed globally)
 ```
 
 ## Project Structure
 
 ```
 portafolio/
-├── frontend/           # React + Vite + Tailwind CSS
+├── frontend/                 # Main workspace (the React app + API)
+│   ├── api/
+│   │   └── send-email.ts     # Vercel serverless function (nodemailer)
 │   ├── src/
-│   │   ├── components/ # Reusable components
-│   │   ├── pages/      # Page components
-│   │   ├── services/   # API calls
-│   │   ├── context/    # React Context (theme)
-│   │   └── types/      # TypeScript interfaces
+│   │   ├── components/       # Reusable components (Navbar, Footer, Spinner, ErrorBoundary, ScrollToTop)
+│   │   ├── pages/            # Page components (Home, Projects, Blog, About, Contact, NotFound, etc.)
+│   │   ├── data/             # Static data (projects, blogPosts, about)
+│   │   ├── context/          # React Context (ThemeContext)
+│   │   ├── hooks/            # Custom hooks (useTheme)
+│   │   └── types/            # TypeScript interfaces (Project, BlogPost)
+│   ├── public/               # Static assets
+│   ├── package.json
+│   ├── tsconfig.json
 │   └── vite.config.ts
-│
-├── backend/            # Express + MongoDB + Mongoose
-│   ├── src/
-│   │   ├── routes/     # API routes
-│   │   ├── controllers/ # Business logic
-│   │   ├── models/     # Mongoose schemas
-│   │   ├── middleware/  # Middlewares
-│   │   ├── config/     # Configuration
-│   │   └── server.ts   # Entry point
-│   └── tsconfig.json
-│
-└── package.json        # Workspace root
+└── package.json              # Workspace root (delegates to frontend)
 ```
+
+## Data Model
+
+All content lives in `frontend/src/data/`:
+- **`projects.ts`** — array of `Project` (the `_id` field is used in the route `/projects/:id`)
+- **`blogPosts.ts`** — array of `BlogPost` (the `slug` field is used in the route `/blog/:slug`)
+- **`about.ts`** — `skillCategories` and `experiences` for the About page
+
+## Adding New Content
+
+To add a project or blog post, simply edit the corresponding `.ts` file and add a new object to the array. No build step or backend needed — TypeScript will validate the structure on save.
 
 ## Environment Variables
 
-### Backend (.env)
-- `MONGODB_URI` - MongoDB connection string
-- `PORT` - Server port (default: 5000)
+### Production (Vercel Dashboard)
+Set these in your Vercel project settings:
+- `MAILER_SERVICE` — e.g. `gmail`
+- `MAILER_EMAIL` — sender email (e.g. `tu@gmail.com`)
+- `MAILER_SECRET_KEY` — app password (NOT regular password; for Gmail, use [App Passwords](https://myaccount.google.com/apppasswords))
+- `ADMIN_EMAIL` — recipient email (where contact messages are sent)
 
-### Frontend (.env.local)
-- `VITE_API_URL` - Backend API URL (default: http://localhost:5000/api)
+### Local Development (`frontend/.env.local`)
+Same variables as above. Required only when testing email sending locally with `vercel dev`.
 
 ## TypeScript Configuration
-- **Backend**: ES2020 target, strict mode, ESM modules
-- **Frontend**: ES2020 target, strict mode, ESMNext modules, React JSX
-- Both configs enforce: `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`
+- **Target**: ES2020, strict mode, ESNext modules, React JSX
+- Enforces: `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`
 
-## Important Notes
+## API Endpoint
+- `POST /api/send-email` — Contact form submission. Validates `name`, `email`, `message`, sends via nodemailer.
 
-- **TypeScript Strict Mode**: Both frontend and backend have strict TypeScript configuration with `noUnusedLocals` and `noUnusedParameters` enabled
-- **ESM Modules**: Both workspaces use `"type": "module"` in package.json
-- **Backend Dev Server**: Uses `tsx watch` for hot-reloading during development
-- **Frontend Dev Server**: Uses Vite with React plugin
+## Notes
 
-## API Endpoints
-- `GET/POST /api/projects` - Projects CRUD
-- `GET/POST /api/blog` - Blog posts CRUD
-- `POST /api/contact` - Contact form submission
+- The frontend uses **static data arrays** for projects and blog posts. There is no database, no admin panel, no CRUD UI.
+- The form submission is the only dynamic backend interaction, handled by a Vercel serverless function.
+- Dark/light theme is persisted in `localStorage` and respects `prefers-color-scheme`.
+- All routes use React Router v6 with lazy-loaded pages via `React.lazy`.

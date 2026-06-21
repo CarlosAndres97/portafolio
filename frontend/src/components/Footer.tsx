@@ -21,35 +21,7 @@ export default function Footer() {
   return (
     <footer className="relative mt-20 bg-gray-50 dark:bg-gray-950 border-t border-gray-200/50 dark:border-gray-800/50">
       <div className="container-custom py-16">
-        {/* Newsletter */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 pb-16 border-b border-gray-200/50 dark:border-gray-800/50">
-          <div>
-            <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">
-              ¿Quieres estar al día?
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Suscríbete a mi newsletter y recibe contenido exclusivo sobre
-              desarrollo web, tutoriales y nuevos proyectos.
-            </p>
-          </div>
-          <form
-            onSubmit={handleSubscribe}
-            className="flex flex-col sm:flex-row gap-3 lg:items-center"
-          >
-            <input
-              type="email"
-              required
-              placeholder="tu@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input-field flex-1"
-            />
-            <button type="submit" className="btn-primary whitespace-nowrap">
-              Suscribirme
-              <FiSend />
-            </button>
-          </form>
-        </div>
+       
 
         {/* Links Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">

@@ -1,16 +1,21 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FiClock, FiArrowUpRight, FiBookOpen, FiSearch, FiX } from "react-icons/fi";
-import { useBlogPosts } from "../hooks/useBlogPosts";
+import {
+  FiClock,
+  FiArrowUpRight,
+  FiBookOpen,
+  FiSearch,
+  FiX,
+} from "react-icons/fi";
+import { blogPosts } from "../data/blogPosts";
 
 export default function Blog() {
-  const { posts, loading, error } = useBlogPosts();
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState("Todos");
 
   const filtered = useMemo(() => {
-    let result = posts;
+    let result = blogPosts;
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(
@@ -23,32 +28,13 @@ export default function Blog() {
       result = result.filter((p) => p.tags?.includes(activeTag));
     }
     return result;
-  }, [posts, search, activeTag]);
+  }, [search, activeTag]);
 
   const allTags = useMemo(
-    () => Array.from(new Set(posts.flatMap((p) => p.tags || []))),
-    [posts]
+    () => Array.from(new Set(blogPosts.flatMap((p) => p.tags || []))),
+    []
   );
   const tags = useMemo(() => ["Todos", ...allTags], [allTags]);
-
-  if (loading) {
-    return (
-      <div className="container-custom py-32 text-center">
-        <div className="inline-flex items-center gap-3 text-gray-600 dark:text-gray-400">
-          <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.1s" }}
-          />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.2s" }}
-          />
-          <span className="ml-2">Cargando artículos...</span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="container-custom py-32">
@@ -114,21 +100,13 @@ export default function Blog() {
         )}
       </motion.div>
 
-      {error && (
-        <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl mb-8">
-          {error}
-        </div>
-      )}
-
       {filtered.length === 0 ? (
         <div className="text-center py-20">
           <div className="inline-flex w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 items-center justify-center mb-4">
             <FiBookOpen size={28} className="text-gray-400" />
           </div>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            {search || activeTag !== "Todos"
-              ? "No se encontraron artículos con esos criterios."
-              : "Aún no hay artículos. Vuelve pronto."}
+            No se encontraron artículos con esos criterios.
           </p>
         </div>
       ) : (

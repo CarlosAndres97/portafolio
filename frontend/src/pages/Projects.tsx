@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useProjects } from "../hooks/useProjects";
+import { projects } from "../data/projects";
 import {
   FiArrowUpRight,
   FiGithub,
@@ -13,7 +13,6 @@ import {
 
 export default function Projects() {
   const navigate = useNavigate();
-  const { projects, loading, error } = useProjects();
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("Todos");
 
@@ -32,35 +31,13 @@ export default function Projects() {
       result = result.filter((p) => p.technologies.includes(activeFilter));
     }
     return result;
-  }, [projects, search, activeFilter]);
+  }, [search, activeFilter]);
 
   const allTechs = useMemo(
     () => Array.from(new Set(projects.flatMap((p) => p.technologies || []))),
-    [projects]
+    []
   );
-  const filters = useMemo(
-    () => ["Todos", ...allTechs],
-    [allTechs]
-  );
-
-  if (loading) {
-    return (
-      <div className="container-custom py-32 text-center">
-        <div className="inline-flex items-center gap-3 text-gray-600 dark:text-gray-400">
-          <div className="w-2 h-2 bg-primary-500 rounded-full animate-bounce" />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.1s" }}
-          />
-          <div
-            className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-            style={{ animationDelay: "0.2s" }}
-          />
-          <span className="ml-2">Cargando proyectos...</span>
-        </div>
-      </div>
-    );
-  }
+  const filters = useMemo(() => ["Todos", ...allTechs], [allTechs]);
 
   return (
     <div className="container-custom py-32">
@@ -128,21 +105,13 @@ export default function Projects() {
         )}
       </motion.div>
 
-      {error && (
-        <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl mb-8">
-          {error}
-        </div>
-      )}
-
       {filtered.length === 0 ? (
         <div className="text-center py-20">
           <div className="inline-flex w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 items-center justify-center mb-4">
             <FiCode size={28} className="text-gray-400" />
           </div>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            {search || activeFilter !== "Todos"
-              ? "No se encontraron proyectos con esos criterios."
-              : "Aún no hay proyectos. Vuelve pronto."}
+            No se encontraron proyectos con esos criterios.
           </p>
         </div>
       ) : (

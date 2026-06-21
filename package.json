@@ -3,19 +3,13 @@
   "version": "1.0.0",
   "description": "Portafolio web profesional",
   "private": true,
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
-    "build": "npm run build --workspace=frontend && npm run build --workspace=backend",
-    "start": "npm start --workspace=backend"
+    "dev": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=frontend",
+    "preview": "npm run preview --workspace=frontend",
+    "start": "vercel dev"
   },
-  "devDependencies": {
-    "concurrently": "^8.2.1"
-  },
-  "dependencies": {
-    "nodemailer": "^9.0.1"
-  }
+  "workspaces": [
+    "frontend"
+  ]
 }

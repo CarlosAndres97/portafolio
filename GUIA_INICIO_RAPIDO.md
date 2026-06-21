@@ -1,144 +1,71 @@
-# Portafolio Web - Guía de Inicio Rápido
+# Guía de Inicio Rápido
 
-## Estado Actual
+## ✅ Estado actual
 
-✅ **Completado:**
-- Estructura monorepo configurada
-- Frontend React + TypeScript + Vite + Tailwind CSS
-- Backend Node.js/Express + MongoDB + TypeScript
-- Modelos, controladores, rutas API
-- Componentes de interfaz (Navbar, Footer, Pages)
-- Sistema de tema oscuro/claro
-- Validación TypeScript
+- ✅ Frontend React 18 + TypeScript + Vite + Tailwind CSS
+- ✅ Datos estáticos en `frontend/src/data/` (proyectos, blog, about)
+- ✅ Serverless function para envío de emails (`frontend/api/send-email.ts`)
+- ✅ Dark/Light mode persistente
+- ✅ TypeScript strict mode
 
-⏳ **En Progreso:**
-- Instalación de npm packages (se está ejecutando)
-
-## Pasos Siguientes
-
-### 1. Esperar a que npm install se complete
-El proceso de instalación está en progreso. Puede tomar 5-10 minutos dependiendo de tu velocidad de internet.
-
-### 2. Iniciar MongoDB
-Necesitas tener MongoDB en ejecución:
-
-**Opción A: MongoDB Atlas (Cloud - Recomendado)**
-- Ve a https://www.mongodb.com/cloud/atlas
-- Crea una cuenta gratuita
-- Crea un cluster gratuito
-- Obtén la cadena de conexión URI
-- Actualiza `backend/.env` con tu URI
-
-**Opción B: MongoDB Local (Requiere instalación)
-```bash
-# Windows con MongoDB instalado
-mongod
-```
-
-### 3. Configurar Variables de Entorno
-
-**Backend** (`backend/.env` - ya está creado):
-```
-MONGODB_URI=mongodb+srv://usuario:contraseña@cluster.mongodb.net/portafolio?retryWrites=true&w=majority
-PORT=5000
-NODE_ENV=development
-FRONTEND_URL=http://localhost:3000
-JWT_SECRET=tu_secret_key_aqui
-```
-
-**Frontend** (`frontend/.env.local` - ya está creado):
-```
-VITE_API_URL=http://localhost:5000/api
-```
-
-### 4. Ejecutar en Desarrollo
-
-Una vez npm install termine:
+## 🚀 Empezar
 
 ```bash
-# En la raíz del proyecto
+npm install
 npm run dev
 ```
 
-Esto iniciará simultáneamente:
-- Frontend: http://localhost:3000
-- Backend: http://localhost:5000
+Abre http://localhost:3000
 
-### 5. Probar la Aplicación
+## 📧 Probar el formulario localmente
 
-1. Abre http://localhost:3000 en tu navegador
-2. Navega por las diferentes secciones:
-   - Home / Inicio
-   - Projects / Proyectos
-   - Blog
-   - About / Sobre mí
-   - Contact / Contacto
-
-3. Prueba el tema oscuro/claro con el botón en el navbar
-
-### 6. Agregar Datos (Opcional)
-
-Puedes usar Postman o Insomnia para agregar datos a través de las APIs:
+Por defecto, el frontend hace `POST /api/send-email`. Para probarlo localmente necesitas la CLI de Vercel:
 
 ```bash
-POST http://localhost:5000/api/projects
-Content-Type: application/json
-
-{
-  "title": "Mi Primer Proyecto",
-  "description": "Descripción del proyecto",
-  "image": "https://via.placeholder.com/400",
-  "technologies": ["React", "Node.js", "MongoDB"],
-  "link": "https://demo.example.com",
-  "github": "https://github.com/usuario/proyecto"
-}
+npm install -g vercel
+vercel link
+vercel env pull frontend/.env.local   # crea .env.local con MAILER_*
+npm start                            # ejecuta `vercel dev`
 ```
 
-## Archivos Importantes
+`vercel dev` levanta tanto el frontend como la serverless function.
 
-- `frontend/src/App.tsx` - Componente raíz y rutas
-- `frontend/src/context/ThemeContext.tsx` - Sistema de tema
-- `frontend/src/services/api.ts` - Cliente HTTP Axios
-- `backend/src/server.ts` - Servidor Express
-- `backend/src/models/` - Esquemas MongoDB
-- `backend/src/routes/` - Definición de APIs
+### Configurar Gmail App Password
 
-## Próximos Pasos (No Inmediatos)
+1. Ve a https://myaccount.google.com/apppasswords
+2. Crea una contraseña de aplicación
+3. Usa esos valores en tu `.env.local`:
+   ```
+   MAILER_SERVICE=gmail
+   MAILER_EMAIL=tu@gmail.com
+   MAILER_SECRET_KEY=xxxx xxxx xxxx xxxx
+   ADMIN_EMAIL=tu@gmail.com
+   ```
 
-1. **Agregar autenticación admin** para crear/editar contenido
-2. **Integrar con servicio de emails** (Nodemailer configurado)
-3. **Desplegar en producción**:
-   - Frontend → Vercel
-   - Backend → Render
-   - Dominio personalizado
-4. **Agregar blog con más funcionalidades** (búsqueda, filtros)
-5. **Configurar analytics**
+## 📝 Agregar contenido
 
-## Solución de Problemas
+Edita los archivos en `frontend/src/data/`:
 
-**Si npm install sigue fallando:**
-1. Elimina todos los `node_modules` y `package-lock.json`
-2. Ejecuta: `npm cache clean --force`
-3. Vuelve a intentar: `npm install`
+- `projects.ts` — array de proyectos (campos: `_id`, `title`, `description`, `image`, `technologies`, `link?`, `github?`, `createdAt`)
+- `blogPosts.ts` — array de posts (campos: `_id`, `title`, `slug`, `content` HTML, `excerpt`, `image`, `tags`, `createdAt`, `updatedAt`)
+- `about.ts` — `skillCategories` y `experiences`
 
-**Si MongoDB connection falla:**
-1. Verifica que MongoDB esté ejecutándose
-2. Revisa tu URI de conexión en `.env`
-3. Asegúrate de que tu IP esté en la whitelist (si usas Atlas)
+## 🚀 Deploy a Vercel
 
-**Puerto ya en uso:**
-```bash
-# Cambiar puerto backend en backend/.env
-PORT=5001
+1. Sube a GitHub
+2. Conecta el repo en [Vercel](https://vercel.com)
+3. **Root Directory**: `frontend/`
+4. Variables de entorno: `MAILER_SERVICE`, `MAILER_EMAIL`, `MAILER_SECRET_KEY`, `ADMIN_EMAIL`
+5. Deploy
 
-# O matar el proceso que está usando el puerto
-# Windows:
-netstat -ano | findstr :5000
-taskkill /PID <PID> /F
-```
+## 🛠️ Solución de problemas
 
----
+**El formulario no envía emails localmente**
+- Instala Vercel CLI: `npm install -g vercel`
+- Usa `npm start` (no `npm run dev`) para que la API funcione
 
-¡Tu portafolio web está casi listo! 🚀
+**Build falla por TypeScript**
+- Revisa que los tipos en `data/*.ts` coincidan con `types/index.ts`
 
-**¿Preguntas?** Consulta los archivos README.md en las carpetas frontend/ y backend/
+**Puerto 3000 ocupado**
+- Vite elegirá otro puerto automáticamente. Mira la consola.

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { contactService } from "../services/contactService";
 import {
   FiMail,
   FiGithub,
@@ -18,6 +17,38 @@ interface FormErrors {
   email?: string;
   message?: string;
 }
+
+interface ApiResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+const contactInfo = [
+  {
+    icon: FiMail,
+    label: "Email",
+    value: "tu@email.com",
+    href: "mailto:tu@email.com",
+  },
+  {
+    icon: FiPhone,
+    label: "Teléfono",
+    value: "+34 123 456 789",
+    href: "tel:+34123456789",
+  },
+  {
+    icon: FiMapPin,
+    label: "Ubicación",
+    value: "Madrid, España",
+  },
+];
+
+const socials = [
+  { icon: FiGithub, href: "https://github.com", label: "GitHub" },
+  { icon: FiLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
+];
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -69,43 +100,30 @@ export default function Contact() {
     setSuccess(false);
 
     try {
-      await contactService.send(formData);
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data: ApiResponse = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error ?? "Error al enviar el mensaje");
+      }
+
       setSuccess(true);
       setFormData({ name: "", email: "", message: "" });
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
-      setError("Error al enviar el mensaje. Por favor, intenta más tarde.");
+      const message =
+        err instanceof Error ? err.message : "Error al enviar el mensaje. Por favor, intenta más tarde.";
+      setError(message);
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
-
-  const contactInfo = [
-    {
-      icon: FiMail,
-      label: "Email",
-      value: "tu@email.com",
-      href: "mailto:tu@email.com",
-    },
-    {
-      icon: FiPhone,
-      label: "Teléfono",
-      value: "+34 123 456 789",
-      href: "tel:+34123456789",
-    },
-    {
-      icon: FiMapPin,
-      label: "Ubicación",
-      value: "Madrid, España",
-    },
-  ];
-
-  const socials = [
-    { icon: FiGithub, href: "https://github.com", label: "GitHub" },
-    { icon: FiLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
-  ];
 
   return (
     <div className="container-custom py-32">
@@ -140,7 +158,7 @@ export default function Contact() {
             </h2>
             <div className="space-y-5">
               {contactInfo.map((info) => {
-                const Wrapper: any = info.href ? "a" : "div";
+                const Wrapper: keyof JSX.IntrinsicElements = info.href ? "a" : "div";
                 return (
                   <Wrapper
                     key={info.label}
@@ -184,18 +202,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 via-primary-500 to-accent-600 p-8 text-white">
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-            <div className="relative">
-              <h3 className="font-display text-xl font-bold mb-2">
-                ¿Prefieres una llamada?
-              </h3>
-              <p className="text-white/80 text-sm">
-                Estoy disponible para videollamadas de lunes a viernes. Agenda un
-                horario que te convenga.
-              </p>
-            </div>
-          </div>
+          
         </motion.div>
 
         {/* Form */}
