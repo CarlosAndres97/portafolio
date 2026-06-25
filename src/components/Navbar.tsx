@@ -66,7 +66,7 @@ export default function Navbar() {
               </div>
             </div>
             <span className="hidden sm:inline gradient-text-static">
-              Carlos.dev
+              Carlos Andres Soriano | Dev
             </span>
           </Link>
 

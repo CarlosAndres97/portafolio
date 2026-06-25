@@ -14,8 +14,8 @@ import {
 import { projects } from "../data/projects";
 
 const stats = [
-  { value: "3+", label: "Años de experiencia" },
-  { value: "20+", label: "Proyectos completados" },
+  { value: "6+", label: "Meses de experiencia en proyectos" },
+  { value: "8+", label: "Proyectos completados" },
   { value: "10+", label: "Tecnologías" },
   { value: "∞", label: "Café consumido" },
 ];
@@ -73,9 +73,9 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6"
             >
-              Construyo
+              Carlos Andres Soriano
               <br />
-              <span className="gradient-text">experiencias digitales</span>
+              <span className="gradient-text">Desarrollador Web</span>
             </motion.h1>
 
             <motion.p
@@ -84,8 +84,8 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto text-balance"
             >
-              Desarrollador Full Stack especializado en crear aplicaciones web
-              modernas, rápidas y accesibles con React, Node.js y las
+              Desarrollador Web Full Stack especializado en crear aplicaciones web 
+               <b className="hidden sm:inline gradient-text-static"> modernas, rápidas y accesibles</b> con las
               tecnologías más actuales.
             </motion.p>
 
@@ -136,8 +136,8 @@ export default function Home() {
             className="hidden lg:flex flex-col gap-4 fixed right-8 top-1/2 -translate-y-1/2 z-20"
           >
             {[
-              { icon: FiGithub, href: "https://github.com", label: "GitHub" },
-              { icon: FiLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
+              { icon: FiGithub, href: "https://github.com/CarlosAndres97", label: "GitHub" },
+              { icon: FiLinkedin, href: "https://www.linkedin.com/in/carlos-andres-soriano-gonzalez-4a17a7249?utm_source=share_via&utm_content=profile&utm_medium=member_android", label: "LinkedIn" },
               { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
             ].map(({ icon: Icon, href, label }) => (
               <a
@@ -170,7 +170,7 @@ export default function Home() {
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
               Combino creatividad, tecnología y atención al detalle para entregar
-              productos excepcionales.
+              productos increíbles.
             </p>
           </motion.div>
 
@@ -292,14 +292,14 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-600 via-primary-500 to-accent-600 p-12 md:p-16 text-center"
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-600 via-primary-700 to-accent-600 p-12 md:p-16 text-center"
           >
             <div className="absolute inset-0 bg-grid-pattern bg-grid-size opacity-20" />
             <div className="absolute -top-20 -left-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-accent-300/20 rounded-full blur-3xl" />
 
             <div className="relative">
-              <h2 className="font-display text-4xl md:text-5xl font-extrabold text-white mb-4">
+              <h2 className="font-display text-4xl md:text-5xl font-extrabold ">
                 ¿Listo para empezar?
               </h2>
               <p className="text-white/80 text-lg max-w-xl mx-auto mb-8">

@@ -33,7 +33,7 @@ export default function Footer() {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-600 to-accent-600 flex items-center justify-center text-white shadow-lg">
                 <span className="text-sm font-black">CS</span>
               </div>
-              <span className="gradient-text-static">Carlos.dev</span>
+              <span className="gradient-text-static">Carlos Andres Soriano | Dev</span>
             </Link>
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
               Desarrollador web full stack apasionado por crear experiencias
@@ -81,11 +81,11 @@ export default function Footer() {
                   href="mailto:tu@email.com"
                   className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  tu@email.com
+                  www.candresdev.com
                 </a>
               </li>
               <li className="text-gray-600 dark:text-gray-400">
-                Madrid, España
+                Bogotá, Colombia
               </li>
               <li className="text-gray-600 dark:text-gray-400">
                 Disponible remoto
@@ -102,10 +102,10 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-2">
             {[
-              { icon: FiGithub, href: "https://github.com", label: "GitHub" },
+              { icon: FiGithub, href: "https://github.com/CarlosAndres97", label: "GitHub" },
               {
                 icon: FiLinkedin,
-                href: "https://linkedin.com",
+                href: "https://www.linkedin.com/in/carlos-andres-soriano-gonzalez-4a17a7249?utm_source=share_via&utm_content=profile&utm_medium=member_android",
                 label: "LinkedIn",
               },
               { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },

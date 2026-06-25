@@ -100,25 +100,53 @@ export default function Contact() {
     setSuccess(false);
 
     try {
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://casg-functions.netlify.app/.netlify/functions/send-email",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
-      const data: ApiResponse = await response.json();
+      let data: ApiResponse | null = null;
+      const text = await response.text();
+      if (text) {
+        try {
+          data = JSON.parse(text) as ApiResponse;
+        } catch {
+          throw new Error(
+            "El servidor respondió con un formato inesperado. Inténtalo de nuevo en unos minutos."
+          );
+        }
+      }
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.error ?? "Error al enviar el mensaje");
+      if (!response.ok) {
+        throw new Error(
+          data?.error ??
+            `Error ${response.status}: no se pudo contactar al servidor.`
+        );
+      }
+
+      if (!data?.success) {
+        throw new Error(data?.error ?? "Error al enviar el mensaje");
       }
 
       setSuccess(true);
       setFormData({ name: "", email: "", message: "" });
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
+      const isNetworkError =
+        err instanceof TypeError && err.message.includes("fetch");
       const message =
-        err instanceof Error ? err.message : "Error al enviar el mensaje. Por favor, intenta más tarde.";
-      setError(message);
+        err instanceof Error
+          ? err.message
+          : "Error al enviar el mensaje. Por favor, intenta más tarde.";
+      setError(
+        isNetworkError
+          ? "No se pudo conectar con el servidor. Verifica tu conexión a internet e inténtalo de nuevo."
+          : message
+      );
       console.error(err);
     } finally {
       setLoading(false);
