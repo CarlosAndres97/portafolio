@@ -138,27 +138,24 @@ export default function About() {
                 </h3>
               </div>
 
-              <div className="space-y-4">
+              <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill) => (
-                  <div key={skill.name}>
-                    <div className="flex justify-between mb-1.5">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {skill.name}
-                      </span>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: idx * 0.1 + 0.2 }}
-                        className={`h-full bg-gradient-to-r ${category.color} rounded-full`}
-                      />
-                    </div>
-                  </div>
+                  <motion.div
+                    key={skill.name}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: idx * 0.05 }}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-800/50 text-sm hover:border-primary-500/50 transition-colors"
+                  >
+                    <skill.icon
+                      size={16}
+                      className="text-primary-500 dark:text-primary-400 shrink-0"
+                    />
+                    <span className="font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                      {skill.name}
+                    </span>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>

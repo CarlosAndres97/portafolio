@@ -2,12 +2,11 @@ import { Link } from "react-router-dom";
 import {
   FiGithub,
   FiLinkedin,
-  FiTwitter,
   FiMail,
   FiArrowUpRight,
-  FiSend,
 } from "react-icons/fi";
 import { useState } from "react";
+import { EMAIL, MAILTO_HREF } from "../utils/contact";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -68,7 +67,6 @@ export default function Footer() {
               <li>Desarrollo Web</li>
               <li>Aplicaciones SPA</li>
               <li>APIs REST</li>
-              <li>Consultoría</li>
             </ul>
           </div>
 
@@ -77,18 +75,16 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <a
-                  href="mailto:tu@email.com"
+                  href={MAILTO_HREF}
                   className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
-                  www.candresdev.com
+                  Contáctame
                 </a>
               </li>
               <li className="text-gray-600 dark:text-gray-400">
                 Bogotá, Colombia
               </li>
-              <li className="text-gray-600 dark:text-gray-400">
-                Disponible remoto
-              </li>
+             
             </ul>
           </div>
         </div>
@@ -107,8 +103,7 @@ export default function Footer() {
                 href: "https://www.linkedin.com/in/carlos-andres-soriano-gonzalez-4a17a7249?utm_source=share_via&utm_content=profile&utm_medium=member_android",
                 label: "LinkedIn",
               },
-              { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
-              { icon: FiMail, href: "mailto:tu@email.com", label: "Email" },
+              { icon: FiMail, href: MAILTO_HREF, label: "Email" },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}

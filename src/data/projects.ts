@@ -7,7 +7,7 @@ export const projects: Project[] = [
     description:
       'Tienda online completa con catálogo, carrito, autenticación, checkout y panel de administración. Gestión de estado global con Zustand, fetching y caché con TanStack Query, formularios tipados con React Hook Form y UI accesible construida sobre Radix UI.',
     image:
-      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80',
+      'https://ik.imagekit.io/olhzji10l/Captura%20de%20pantalla%202026-06-16%20113701.png?updatedAt=1781627864518',
     technologies: [
       'React',
       'TypeScript',
@@ -22,6 +22,7 @@ export const projects: Project[] = [
     ],
     github: 'https://github.com/CarlosAndres97/teslo-shop-frontend-react',
     createdAt: '2026-06-15T10:00:00.000Z',
+     link:"https://teslo-shop-app-react.netlify.app/",
   },
   {
     _id: 'proj-2',
@@ -29,7 +30,7 @@ export const projects: Project[] = [
     description:
       'Aplicación full-stack con SPA en React y API en NestJS. Listado paginado de héroes con búsqueda, autenticación, navegación avanzada con Radix UI y suite de pruebas con Vitest + Testing Library. Repositorio complementario del backend disponible en la misma cuenta.',
     image:
-      'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&q=80',
+      'https://ik.imagekit.io/olhzji10l/Captura%20de%20pantalla%202026-06-16%20173801.png?updatedAt=1781649760432',
     technologies: [
       'React',
       'TypeScript',
@@ -44,6 +45,7 @@ export const projects: Project[] = [
     ],
     github: 'https://github.com/CarlosAndres97/heroes-app-front',
     createdAt: '2026-01-29T14:30:00.000Z',
+    link:"https://serene-caramel-eefaba.netlify.app/"
   },
   {
     _id: 'proj-3',
@@ -70,7 +72,7 @@ export const projects: Project[] = [
     description:
       'Buscador de GIFs consumiendo la API de Giphy con React 19 y TypeScript estricto. Peticiones HTTP con Axios y mocks para testing, suite de pruebas con Vitest + Testing Library + jsdom. Demuestra manejo de estado, hooks personalizados y consumo de APIs externas.',
     image:
-      'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=800&q=80',
+      'https://ik.imagekit.io/olhzji10l/Captura%20de%20pantalla%202026-06-30%20151249.png',
     technologies: [
       'React',
       'TypeScript',

@@ -1,16 +1,39 @@
 import type { IconType } from 'react-icons'
 import {
-  FiCode,
   FiCpu,
   FiTool,
   FiHeart,
+  FiServer,
+  FiBox,
+  FiEdit3,
+  FiLayers,
+  FiUsers,
+  FiTrendingUp,
+  FiTarget,
+  FiCode,
 } from 'react-icons/fi'
+import {
+  SiReact,
+  SiTypescript,
+  SiJavascript,
+  SiTailwindcss,
+  SiVite,
+  SiReactrouter,
+  SiNodedotjs,
+  SiExpress,
+  SiPrisma,
+  SiPostgresql,
+  SiReactquery,
+  SiVitest,
+  SiGithub,
+  SiNetlify,
+} from 'react-icons/si'
 
 export interface SkillCategory {
   icon: IconType
   title: string
   color: string
-  skills: { name: string; level: number }[]
+  skills: { name: string; icon: IconType }[]
 }
 
 export interface Experience {
@@ -54,12 +77,12 @@ export const skillCategories: SkillCategory[] = [
     title: 'Frontend',
     color: 'from-blue-500 to-cyan-500',
     skills: [
-      { name: 'React (18 / 19)', level: 92 },
-      { name: 'TypeScript', level: 90 },
-      { name: 'JavaScript (ES6+)', level: 92 },
-      { name: 'Tailwind CSS', level: 88 },
-      { name: 'Vite', level: 88 },
-      { name: 'React Router', level: 85 },
+      { name: 'React (18 / 19)', icon: SiReact },
+      { name: 'TypeScript', icon: SiTypescript },
+      { name: 'JavaScript (ES6+)', icon: SiJavascript },
+      { name: 'Tailwind CSS', icon: SiTailwindcss },
+      { name: 'Vite', icon: SiVite },
+      { name: 'React Router', icon: SiReactrouter },
     ],
   },
   {
@@ -67,12 +90,11 @@ export const skillCategories: SkillCategory[] = [
     title: 'Backend',
     color: 'from-purple-500 to-pink-500',
     skills: [
-      { name: 'Node.js', level: 88 },
-      { name: 'Express', level: 85 },
-      { name: 'NestJS', level: 80 },
-      { name: 'REST APIs', level: 90 },
-      { name: 'Prisma', level: 80 },
-      { name: 'PostgreSQL', level: 78 },
+      { name: 'Node.js', icon: SiNodedotjs },
+      { name: 'Express', icon: SiExpress },
+      { name: 'REST APIs', icon: FiServer },
+      { name: 'Prisma', icon: SiPrisma },
+      { name: 'PostgreSQL', icon: SiPostgresql },
     ],
   },
   {
@@ -80,12 +102,12 @@ export const skillCategories: SkillCategory[] = [
     title: 'Estado, datos y testing',
     color: 'from-orange-500 to-red-500',
     skills: [
-      { name: 'TanStack Query', level: 82 },
-      { name: 'Zustand', level: 78 },
-      { name: 'React Hook Form', level: 80 },
-      { name: 'Hooks & Context API', level: 90 },
-      { name: 'Radix UI', level: 75 },
-      { name: 'Vitest + Testing Library', level: 80 },
+      { name: 'TanStack Query', icon: SiReactquery },
+      { name: 'Zustand', icon: FiBox },
+      { name: 'React Hook Form', icon: FiEdit3 },
+      { name: 'Hooks & Context API', icon: FiCode },
+      { name: 'Radix UI', icon: FiLayers },
+      { name: 'Vitest', icon: SiVitest },
     ],
   },
   {
@@ -93,11 +115,11 @@ export const skillCategories: SkillCategory[] = [
     title: 'Tools & Soft Skills',
     color: 'from-green-500 to-emerald-500',
     skills: [
-      { name: 'Git / GitHub', level: 92 },
-      { name: 'Netlify Functions (Serverless)', level: 75 },
-      { name: 'Trabajo en equipo', level: 95 },
-      { name: 'Aprendizaje continuo', level: 98 },
-      { name: 'Resolución de problemas', level: 92 },
+      { name: 'Git / GitHub', icon: SiGithub },
+      { name: 'Netlify Functions', icon: SiNetlify },
+      { name: 'Trabajo en equipo', icon: FiUsers },
+      { name: 'Aprendizaje continuo', icon: FiTrendingUp },
+      { name: 'Resolución de problemas', icon: FiTarget },
     ],
   },
 ]

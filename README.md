@@ -37,11 +37,7 @@ portafolio/
 ├── src/
 │   ├── components/           # Componentes reutilizables
 │   ├── pages/                # Páginas
-│   ├── data/                 # Datos estáticos (projects, blogPosts, about)
-│   ├── context/              # ThemeContext
-│   ├── hooks/                # useTheme
-│   └── types/                # Interfaces TypeScript
-
+│   ├── data/                 # Datos estáticos (projects, 
 ├── public/
 └── package.json
 ```
@@ -56,15 +52,6 @@ https://casg-functions.netlify.app/.netlify/functions/send-email
 
 La función está en `netlify/functions/send-email.ts` y se deploya al proyecto Netlify `casg-functions`.
 
-### Variables de entorno requeridas en Netlify
-
-| Variable | Descripción |
-|---|---|
-| `MAILER_SERVICE` | Servicio SMTP (e.g. `gmail`) |
-| `MAILER_EMAIL` | Email remitente |
-| `MAILER_SECRET_KEY` | App Password (no la contraseña normal) |
-| `ADMIN_EMAIL` | Email donde recibes los mensajes |
-| `ALLOWED_ORIGIN` | Opcional. Origen CORS permitido (default `*`) |
 
 
 ```
@@ -74,7 +61,7 @@ La función está en `netlify/functions/send-email.ts` y se deploya al proyecto 
 - Responsive design
 - Dark/Light mode
 - Galería de proyectos con búsqueda y filtros
-- Blog con búsqueda por tags
+
 - Formulario de contacto funcional
 - Descarga de CV
 - SEO friendly

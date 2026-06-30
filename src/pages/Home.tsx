@@ -138,7 +138,6 @@ export default function Home() {
             {[
               { icon: FiGithub, href: "https://github.com/CarlosAndres97", label: "GitHub" },
               { icon: FiLinkedin, href: "https://www.linkedin.com/in/carlos-andres-soriano-gonzalez-4a17a7249?utm_source=share_via&utm_content=profile&utm_medium=member_android", label: "LinkedIn" },
-              { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}

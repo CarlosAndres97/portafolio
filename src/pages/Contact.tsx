@@ -11,6 +11,7 @@ import {
   FiMapPin,
   FiPhone,
 } from "react-icons/fi";
+import { EMAIL, MAILTO_HREF } from "../utils/contact";
 
 interface FormErrors {
   name?: string;
@@ -28,8 +29,8 @@ const contactInfo = [
   {
     icon: FiMail,
     label: "Email",
-    value: "tu@email.com",
-    href: "mailto:tu@email.com",
+    value: EMAIL,
+    href: MAILTO_HREF,
   },
   {
     icon: FiPhone,
@@ -45,9 +46,8 @@ const contactInfo = [
 ];
 
 const socials = [
-  { icon: FiGithub, href: "https://github.com", label: "GitHub" },
-  { icon: FiLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: FiTwitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: FiGithub, href: "https://github.com/CarlosAndres97", label: "GitHub" },
+  { icon: FiLinkedin, href: "https://www.linkedin.com/in/carlos-andres-soriano-gonzalez-4a17a7249?utm_source=share_via&utm_content=profile&utm_medium=member_android", label: "LinkedIn" },
 ];
 
 export default function Contact() {
