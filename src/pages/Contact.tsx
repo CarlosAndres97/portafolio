@@ -4,7 +4,6 @@ import {
   FiMail,
   FiGithub,
   FiLinkedin,
-  FiTwitter,
   FiSend,
   FiCheck,
   FiAlertCircle,
@@ -35,13 +34,13 @@ const contactInfo = [
   {
     icon: FiPhone,
     label: "Teléfono",
-    value: "+34 123 456 789",
-    href: "tel:+34123456789",
+    value: "+57 3107968191",
+    href: "tel:+573107968191",
   },
   {
     icon: FiMapPin,
     label: "Ubicación",
-    value: "Madrid, España",
+    value: "Bogotá, Colombia",
   },
 ];
 
