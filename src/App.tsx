@@ -9,8 +9,6 @@ import { Spinner } from './components/Spinner'
 
 const Home = lazy(() => import('./pages/Home'))
 const Projects = lazy(() => import('./pages/Projects'))
-const Blog = lazy(() => import('./pages/Blog'))
-const BlogDetail = lazy(() => import('./pages/BlogDetail'))
 const Contact = lazy(() => import('./pages/Contact'))
 const About = lazy(() => import('./pages/About'))
 const ProjectDescription = lazy(() => import('./pages/ProjectDescription'))
@@ -33,8 +31,6 @@ export default function App() {
                     path="/projects/:id"
                     element={<ProjectDescription />}
                   />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:slug" element={<BlogDetail />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/about" element={<About />} />
                   <Route path="*" element={<NotFound />} />

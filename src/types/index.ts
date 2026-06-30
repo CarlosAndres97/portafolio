@@ -9,18 +9,6 @@ export interface Project {
   createdAt: string
 }
 
-export interface BlogPost {
-  _id: string
-  title: string
-  slug: string
-  content: string
-  excerpt: string
-  image: string
-  tags: string[]
-  createdAt: string
-  updatedAt: string
-}
-
 export interface ContactMessage {
   name: string
   email: string

@@ -47,7 +47,6 @@ export default function Footer() {
               {[
                 { to: "/", label: "Inicio" },
                 { to: "/projects", label: "Proyectos" },
-                { to: "/blog", label: "Blog" },
                 { to: "/about", label: "Sobre mí" },
               ].map((link) => (
                 <li key={link.to}>
